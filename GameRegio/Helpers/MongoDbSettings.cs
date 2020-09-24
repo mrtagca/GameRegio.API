@@ -1,0 +1,23 @@
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace GameRegio.Helpers
+{
+    public class MongoDbSettings
+    {
+        public string ConnectionString;
+        public string Database;
+
+        //Configuration için kullanılacak
+        #region Const Values
+
+        public const string ConnectionStringValue = nameof(ConnectionString);
+        public const string DatabaseValue = nameof(Database);
+
+        #endregion
+    }
+}
