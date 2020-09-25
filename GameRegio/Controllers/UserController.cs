@@ -65,13 +65,13 @@ namespace GameRegio.Controllers
         {
             try
             {
-                Users findUser = _userDataAccess.GetByIdAsync(userUpdateModel.ObjectId.ToString()).Result;
+                Users findUser = _userDataAccess.GetByIdAsync(userUpdateModel.UserId.ToString()).Result;
                 findUser.Email = userUpdateModel.Email;
                 findUser.Password = userUpdateModel.Password;
                 findUser.CreatedAt = DateTime.Now;
 
 
-                var user = _userDataAccess.UpdateAsync(userUpdateModel.ObjectId.ToString(),findUser).Result;
+                var user = _userDataAccess.UpdateAsync(userUpdateModel.UserId.ToString(),findUser).Result;
 
                 if (user == null)
                     return BadRequest(new { message = "User eklenemedi!" });

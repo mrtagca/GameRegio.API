@@ -13,13 +13,13 @@ namespace GameRegio.Abstract
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonId]
         [BsonElement(Order = 0)]
-        //public string Id { get;} = ObjectId.GenerateNewId().ToString();
 
         public string Id { get; set; }
 
         [BsonRepresentation(BsonType.DateTime)]
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         [BsonElement(Order = 101)]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow.AddHours(3);
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow.AddHours(3);
     }
 }

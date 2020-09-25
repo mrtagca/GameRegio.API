@@ -151,8 +151,10 @@ namespace GameRegio
             // Dependency Injection yapýlandýrmasý
             services.AddScoped<IUserService, UserService>();
 
+
             services.AddMongoDbSettings(Configuration);
             services.AddSingleton<IUserDataAccess, UserMongoDbDal>();
+            services.AddSingleton<IWalletDataAccess, WalletService>();
 
         }
 

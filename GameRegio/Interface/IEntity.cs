@@ -13,5 +13,7 @@ namespace GameRegio.Interface
     {
         public TKey Id { get; }
         DateTime CreatedAt { get; set; }
+
+        DateTime UpdatedAt { get; set; }
     }
 }

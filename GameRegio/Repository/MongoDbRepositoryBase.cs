@@ -1,4 +1,5 @@
 ﻿using GameRegio.Abstract;
+using GameRegio.Entities;
 using GameRegio.Helpers;
 using GameRegio.Interface;
 using Microsoft.Extensions.Options;
@@ -38,14 +39,31 @@ namespace GameRegio.Repository
 
         public virtual Task<T> GetByIdAsync(string id)
         {
-            return Collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            try
+            {
+
+                return Collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         public virtual async Task<T> AddAsync(T entity)
         {
-            var options = new InsertOneOptions { BypassDocumentValidation = false };
-            await Collection.InsertOneAsync(entity, options);
-            return entity;
+            try
+            {
+                var options = new InsertOneOptions { BypassDocumentValidation = false };
+                await Collection.InsertOneAsync(entity, options);
+                return entity;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         public virtual async Task<bool> AddRangeAsync(IEnumerable<T> entities)

@@ -1,4 +1,6 @@
 ﻿using GameRegio.Abstract;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,9 @@ namespace GameRegio.Entities
 {
     public class Users : MongoDbEntity
     {
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonId]
+        [BsonElement(Order = 0)]
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
