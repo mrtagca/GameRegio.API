@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class ModService : MongoDbRepositoryBase<Mods>, IModDataAccess
+    public class ModService : MongoDbRepositoryBase<Mods>, IModDataAccess,IDisposable
     {
         public ModService(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

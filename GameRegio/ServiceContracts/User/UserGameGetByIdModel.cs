@@ -5,8 +5,14 @@ using System.Threading.Tasks;
 
 namespace GameRegio.ServiceContracts.User
 {
-    public class UserGameGetByIdModel
+    public class UserGameGetByIdModel : IDisposable
     {
         public string UserGameId { get; set; }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

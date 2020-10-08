@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class PermitService : MongoDbRepositoryBase<Permits>, IPermitDataAccess
+    public class PermitService : MongoDbRepositoryBase<Permits>, IPermitDataAccess,IDisposable
     {
         public PermitService(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

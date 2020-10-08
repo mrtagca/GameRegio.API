@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class TournamentService : MongoDbRepositoryBase<Tournaments>, ITournamentDataAccess
+    public class TournamentService : MongoDbRepositoryBase<Tournaments>, ITournamentDataAccess,IDisposable
     {
         public TournamentService(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

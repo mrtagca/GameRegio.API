@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class WalletService : MongoDbRepositoryBase<Wallets>, IWalletDataAccess
+    public class WalletService : MongoDbRepositoryBase<Wallets>, IWalletDataAccess,IDisposable
     {
         public WalletService(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

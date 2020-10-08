@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Entities
 {
-    public class Rules : MongoDbEntity
+    public class Rules : MongoDbEntity,IDisposable
     {
         public string RuleName { get; set; }
         public string RuleDescription { get; set; }
@@ -14,5 +14,10 @@ namespace GameRegio.Entities
         public string ModId { get; set; }
         public bool IsActive { get; set; }
 
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

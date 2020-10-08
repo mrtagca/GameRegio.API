@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class UserService : IUserService
+    public class UserService : IUserService,IDisposable
     {
         readonly AppSettings _appSettings;
         private readonly IUserDataAccess _userDataAccess;
@@ -49,6 +49,12 @@ namespace GameRegio.Services
             string generatedToken = tokenHandler.WriteToken(token);
 
             return (user.Username, generatedToken);
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

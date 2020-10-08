@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Entities
 {
-    public class Devices : MongoDbEntity
+    public class Devices : MongoDbEntity,IDisposable
     {
         public string UserId { get; set; }
         public string DeviceName { get; set; }
@@ -19,5 +19,10 @@ namespace GameRegio.Entities
         public string IpAddress { get; set; }
         public string MacAddress { get; set; }
 
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Entities
 {
-    public class Games : MongoDbEntity
+    public class Games : MongoDbEntity,IDisposable
     {
         public string GameName { get; set; }
         public string GameLogo { get; set; }
@@ -16,5 +16,11 @@ namespace GameRegio.Entities
         public bool Mobile { get; set; }
         public bool Playstation { get; set; }
         public bool Xbox { get; set; }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

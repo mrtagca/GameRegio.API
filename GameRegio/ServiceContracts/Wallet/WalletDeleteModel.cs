@@ -5,8 +5,14 @@ using System.Threading.Tasks;
 
 namespace GameRegio.ServiceContracts.Wallet
 {
-    public class WalletDeleteModel
+    public class WalletDeleteModel : IDisposable
     {
         public string Id { get; set; }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

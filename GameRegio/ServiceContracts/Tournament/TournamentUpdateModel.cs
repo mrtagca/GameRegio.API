@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.ServiceContracts.Tournament
 {
-    public class TournamentUpdateModel
+    public class TournamentUpdateModel : IDisposable
     {
         public string TournamentId { get; set; }
         public string GameId { get; set; }
@@ -15,5 +15,10 @@ namespace GameRegio.ServiceContracts.Tournament
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

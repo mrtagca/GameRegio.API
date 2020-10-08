@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.ServiceContracts.User
 {
-    public class UserUpdateModel
+    public class UserUpdateModel : IDisposable
     {
         public string UserId { get; set; }
         public string Username { get; set; }
@@ -22,5 +22,11 @@ namespace GameRegio.ServiceContracts.User
         public int IsDeleted { get; set; }
         public int RegisterDate { get; set; }
         public DateTime LastUpdateTime { get; set; }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

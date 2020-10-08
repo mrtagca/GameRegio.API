@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Entities
 {
-    public class Config : MongoDbEntity
+    public class Config : MongoDbEntity,IDisposable
     {
         public string Brand { get; set; }
         public string Logo { get; set; }
@@ -26,6 +26,12 @@ namespace GameRegio.Entities
         public string ServerIp { get; set; }
         public string OneSignalJson { get; set; }
         public string RelatedJson { get; set; }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }
 

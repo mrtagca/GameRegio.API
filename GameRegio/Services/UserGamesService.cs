@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class UserGamesService : MongoDbRepositoryBase<UserGames>, IUserGameDataAccess
+    public class UserGamesService : MongoDbRepositoryBase<UserGames>, IUserGameDataAccess,IDisposable
     {
         public UserGamesService(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

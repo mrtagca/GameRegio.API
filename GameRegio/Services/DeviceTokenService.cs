@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class DeviceTokenService : MongoDbRepositoryBase<DeviceTokens>, IDeviceTokenDataAccess
+    public class DeviceTokenService : MongoDbRepositoryBase<DeviceTokens>, IDeviceTokenDataAccess,IDisposable
     {
         public DeviceTokenService(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

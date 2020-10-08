@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Entities
 {
-    public class Users : MongoDbEntity
+    public class Users : MongoDbEntity,IDisposable
     {
         public string Username { get; set; }
         public string Email { get; set; }
@@ -24,6 +24,11 @@ namespace GameRegio.Entities
         public int RegisterDate { get; set; }
         public DateTime LastUpdateTime { get; set; }
 
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 
  

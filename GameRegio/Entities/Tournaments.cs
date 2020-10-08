@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Entities
 {
-    public class Tournaments : MongoDbEntity
+    public class Tournaments : MongoDbEntity,IDisposable
     {
         public string GameId { get; set; }
         public int UserCount { get; set; }
@@ -15,5 +15,10 @@ namespace GameRegio.Entities
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
+        }
     }
 }

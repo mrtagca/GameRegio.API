@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class DuelService : MongoDbRepositoryBase<Duels>, IDuelDataAccess
+    public class DuelService : MongoDbRepositoryBase<Duels>, IDuelDataAccess,IDisposable
     {
         public DuelService(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }

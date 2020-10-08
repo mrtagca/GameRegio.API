@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace GameRegio.Services
 {
-    public class UserMongoDbDal : MongoDbRepositoryBase<Users>, IUserDataAccess
+    public class UserMongoDbDal : MongoDbRepositoryBase<Users>, IUserDataAccess,IDisposable
     {
         public UserMongoDbDal(IOptions<MongoDbSettings> options) : base(options)
         {
 
+        }
+
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.SuppressFinalize(this);
         }
     }
 }
