@@ -8,6 +8,7 @@ using GameRegio.ServiceContracts.Wallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace GameRegio.Controllers
 {
@@ -35,7 +36,6 @@ namespace GameRegio.Controllers
             return Ok(result.ToList());
         }
 
-
         [HttpGet]
         public IActionResult GetById(WalletGetByIdModel walletGetByIdModel)
         {
@@ -51,7 +51,14 @@ namespace GameRegio.Controllers
         [HttpPost]
         public IActionResult Create(Wallets wallets)
         {
-            var wallet = _walletDataAccess.AddAsync(wallets);
+            var wallet = _walletDataAccess.AddAsync(new Wallets()
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                UserId = wallets.UserId,
+                CurrentBalance = wallets.CurrentBalance,
+                PaparaId = wallets.PaparaId
+
+            });
 
             if (wallet == null)
                 return BadRequest(new { message = "Wallet eklenemedi!" });
@@ -64,18 +71,18 @@ namespace GameRegio.Controllers
         {
             try
             {
-                Wallets findWallet = _walletDataAccess.GetByIdAsync(walletUpdateModel.WalletId.ToString()).Result;
-                findWallet.UserId = walletUpdateModel.UserId;
-                findWallet.CurrentBalance = walletUpdateModel.CurrentBalance;
-                findWallet.PaparaId = walletUpdateModel.PaparaId;
-                findWallet.UpdatedAt = DateTime.UtcNow.AddHours(3);
 
+                var wallet = _walletDataAccess.UpdateAsync(walletUpdateModel.WalletId.ToString(), new Wallets() {
+                    UserId = walletUpdateModel.UserId,
+                    CurrentBalance = walletUpdateModel.CurrentBalance,
+                    PaparaId = walletUpdateModel.PaparaId,
+                    UpdatedAt = DateTime.UtcNow.AddHours(3)
+                }).Result;
 
-                var wallet = _walletDataAccess.UpdateAsync(walletUpdateModel.WalletId.ToString(), findWallet).Result;
                 wallet = _walletDataAccess.GetByIdAsync(walletUpdateModel.WalletId.ToString()).Result;
 
                 if (wallet == null)
-                    return BadRequest(new { message = "User eklenemedi!" });
+                    return BadRequest(new { message = "Wallet güncellenemedi!" });
 
                 return Ok(new { wallet });
             }
@@ -91,7 +98,7 @@ namespace GameRegio.Controllers
             var result = _walletDataAccess.DeleteAsync(walletDeleteModel.Id).Result;
             if (result == null)
             {
-                return BadRequest("Not found");
+                return BadRequest("Wallet silinemedi!");
             }
 
             return Ok(new { result });

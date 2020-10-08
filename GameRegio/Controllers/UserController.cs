@@ -9,6 +9,7 @@ using GameRegio.ServiceContracts.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace GameRegio.Controllers
 {
@@ -18,12 +19,15 @@ namespace GameRegio.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserDataAccess _userDataAccess;
+        private readonly IUserGameDataAccess _userGameDataAccess;
 
-        public UserController(IUserDataAccess userDataAccess)
+        public UserController(IUserDataAccess userDataAccess, IUserGameDataAccess userGameDataAccess)
         {
             this._userDataAccess = userDataAccess;
+            this._userGameDataAccess = userGameDataAccess;
         }
 
+        #region Users
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -35,7 +39,6 @@ namespace GameRegio.Controllers
 
             return Ok(result.ToList());
         }
-
 
         [HttpGet]
         public IActionResult GetById(UserGetByIdModel userGetByIdModel)
@@ -52,7 +55,20 @@ namespace GameRegio.Controllers
         [HttpPost]
         public IActionResult Create(Users users)
         {
-            var user = _userDataAccess.AddAsync(users);
+            var user = _userDataAccess.AddAsync(new Users()
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                Username = users.Username,
+                Email = users.Email,
+                Password = users.Password,
+                Name = users.Name,
+                Age = users.Age,
+                Phone = users.Phone,
+                ProfilePhoto = users.ProfilePhoto,
+                Bio = users.Bio,
+                IsBanned = 0,
+                IsDeleted = 0
+            });
 
             if (user == null)
                 return BadRequest(new { message = "User eklenemedi!" });
@@ -71,7 +87,7 @@ namespace GameRegio.Controllers
                 findUser.CreatedAt = DateTime.Now;
 
 
-                var user = _userDataAccess.UpdateAsync(userUpdateModel.UserId.ToString(),findUser).Result;
+                var user = _userDataAccess.UpdateAsync(userUpdateModel.UserId.ToString(), findUser).Result;
 
                 if (user == null)
                     return BadRequest(new { message = "User eklenemedi!" });
@@ -96,5 +112,88 @@ namespace GameRegio.Controllers
 
             return Ok(new { result });
         }
+        #endregion
+
+        #region UserGames
+        [HttpGet]
+        public IActionResult GetAllUserGames()
+        {
+            var result = _userGameDataAccess.Get();
+            if (result == null)
+            {
+                return BadRequest("Not found");
+            }
+
+            return Ok(result.ToList());
+        }
+
+        [HttpGet]
+        public IActionResult GetUserGameById(UserGameGetByIdModel userGameGetByIdModel)
+        {
+            var result = _userGameDataAccess.GetByIdAsync(userGameGetByIdModel.UserGameId).Result;
+            if (result == null)
+            {
+                return BadRequest("Not found");
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public IActionResult CreateUserGame(UserGames userGames)
+        {
+            var userGame = _userGameDataAccess.AddAsync(new UserGames()
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                GameId = userGames.GameId,
+                UserId = userGames.UserId,
+                GameUserName = userGames.GameUserName
+            });
+
+            if (userGame == null)
+                return BadRequest(new { message = "User eklenemedi!" });
+
+            return Ok(new { userGame.Result });
+        }
+
+        [HttpPost]
+        public IActionResult UpdateUserGame(UserGameUpdateModel userGameUpdateModel)
+        {
+            try
+            {
+                UserGames findUserGames = _userGameDataAccess.GetByIdAsync(userGameUpdateModel.UserGameId.ToString()).Result;
+                //findUserGames.Id = userGameUpdateModel.UserGameId.ToString();
+                findUserGames.GameId = userGameUpdateModel.GameId;
+                findUserGames.UserId = userGameUpdateModel.UserId;
+                findUserGames.GameUserName = userGameUpdateModel.GameUserName;
+
+
+
+                var userGame = _userGameDataAccess.UpdateAsync(userGameUpdateModel.UserGameId.ToString(), findUserGames).Result;
+
+                if (userGame == null)
+                    return BadRequest(new { message = "User eklenemedi!" });
+
+                return Ok(new { userGame });
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteUserGame(UserGameDeleteModel userGameDeleteModel)
+        {
+            var result = _userDataAccess.DeleteAsync(userGameDeleteModel.UserGameId).Result;
+            if (result == null)
+            {
+                return BadRequest("Not found");
+            }
+
+            return Ok(new { result });
+        }
+        #endregion
     }
 }

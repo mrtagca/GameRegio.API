@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameRegio.Controllers
 {
-    
-    [ApiController]
     [Route("[controller]/[action]")]
+    [ApiController]
+   
     public class TokenController : Controller
     {
         private readonly IUserDataAccess _userDataAccess;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameRegio.Abstract;
+using GameRegio.Entities;
 using GameRegio.Extensions;
 using GameRegio.Helpers;
 using GameRegio.Interface;
@@ -60,7 +61,7 @@ namespace GameRegio
         {
             services.AddControllers();
 
-            
+
 
             var appSettingSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingSection);
@@ -89,7 +90,7 @@ namespace GameRegio
             //    };
             //});
 
-             //Projede farklý authentication tipleri olabileceði için varsayýlan olarak JWT ile kontrol edeceðimizin bilgisini kaydediyoruz.
+            //Projede farklý authentication tipleri olabileceði için varsayýlan olarak JWT ile kontrol edeceðimizin bilgisini kaydediyoruz.
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -155,7 +156,18 @@ namespace GameRegio
             services.AddMongoDbSettings(Configuration);
             services.AddSingleton<IUserDataAccess, UserMongoDbDal>();
             services.AddSingleton<IWalletDataAccess, WalletService>();
-
+            services.AddSingleton<IUserGameDataAccess, UserGamesService>();
+            services.AddSingleton<ITransactionDataAccess, TransactionService>();
+            services.AddSingleton<ITournamentDataAccess, TournamentService>();
+            services.AddSingleton<IDeviceTokenDataAccess, DeviceTokenService>();
+            services.AddSingleton<IStatisticDataAccess, StatisticService>();
+            services.AddSingleton<IRuleDataAccess, RuleService>();
+            services.AddSingleton<IPermitDataAccess, PermitService>();
+            services.AddSingleton<IModDataAccess, ModService>();
+            services.AddSingleton<IGameDataAccess, GameService>();
+            services.AddSingleton<IDuelDataAccess, DuelService>();
+            services.AddSingleton<IDeviceDataAccess, DeviceService>();
+            services.AddSingleton<IConfigDataAccess, ConfigService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -165,6 +177,8 @@ namespace GameRegio
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDeveloperExceptionPage();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

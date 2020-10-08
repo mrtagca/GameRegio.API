@@ -3,7 +3,9 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GameRegio.Abstract
@@ -13,7 +15,7 @@ namespace GameRegio.Abstract
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonId]
         [BsonElement(Order = 0)]
-
+        [JsonIgnore] //id nin insert edilememesi için bu attribute u kullanıyoruz. (System.Text.Json.Serialization)
         public string Id { get; set; }
 
         [BsonRepresentation(BsonType.DateTime)]
