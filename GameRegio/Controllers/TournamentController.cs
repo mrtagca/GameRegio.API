@@ -62,7 +62,7 @@ namespace GameRegio.Controllers
             });
 
             if (tournament == null)
-                return BadRequest(new { message = "Wallet eklenemedi!" });
+                return BadRequest(new { message = "Turnuva eklenemedi!" });
 
             return Ok(new { tournament.Result });
         }
@@ -86,7 +86,7 @@ namespace GameRegio.Controllers
                 transaction = _tournamentDataAccess.GetByIdAsync(tournamentUpdateModel.TournamentId.ToString()).Result;
 
                 if (transaction == null)
-                    return BadRequest(new { message = "Transaction güncellenemedi!" });
+                    return BadRequest(new { message = "Turnuva güncellenemedi!" });
 
                 return Ok(new { transaction });
             }
@@ -102,7 +102,7 @@ namespace GameRegio.Controllers
             var result = _tournamentDataAccess.DeleteAsync(tournamentDeleteModel.Id).Result;
             if (result == null)
             {
-                return BadRequest("Wallet silinemedi!");
+                return BadRequest("Turnuva silinemedi!");
             }
 
             return Ok(new { result });
