@@ -11,7 +11,7 @@ using MongoDB.Bson;
 
 namespace GameRegio.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class StatisticController : ControllerBase
     {
