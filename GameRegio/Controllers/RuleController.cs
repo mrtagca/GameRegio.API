@@ -85,7 +85,7 @@ namespace GameRegio.Controllers
                 rule = _ruleDataAccess.GetByIdAsync(ruleUpdateModel.RuleId.ToString()).Result;
 
                 if (rule == null)
-                    return BadRequest(new { message = "İstatistik güncellenemedi!" });
+                    return BadRequest(new { message = "Rule güncellenemedi!" });
 
                 return Ok(new { rule });
             }
@@ -101,7 +101,7 @@ namespace GameRegio.Controllers
             var result = _ruleDataAccess.DeleteAsync(ruleDeleteModel.Id).Result;
             if (result == null)
             {
-                return BadRequest("İstatistik silinemedi!");
+                return BadRequest("Rule silinemedi!");
             }
 
             return Ok(new { result });
